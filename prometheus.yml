@@ -12,3 +12,4 @@ scrape_configs:
     - targets:
       - docker1.mccorkle.co:9100
       - docker2.mccorkle.co:9100
+      - docker3.mccorkle.co:9100
