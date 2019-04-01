@@ -2,6 +2,7 @@ version: "3"
 
 volumes:
   prometheus_data: {}
+  grafana_data: {}
 
 networks:
   monitor_network:
@@ -9,24 +10,21 @@ networks:
 services:
   prometheus:
     image: prom/prometheus
-    #build: "https://github.com/njmccorkle/docker-prometheus.git"
+    # depends_on:
+      # - cadvisor
     volumes:
       - prometheus_data:/prometheus
       - ./prometheus/:/etc/prometheus
+    networks:
+      - monitor_network
+    ports:
+      - 9090:9090
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
       - '--web.enable-lifecycle'
-
-    ports:
-      - 9090:9090
-    # depends_on:
-      # - cadvisor
-    networks:
-      - monitor_network
-    restart: always
 
     deploy:
       replicas: 1
@@ -39,8 +37,41 @@ services:
       placement:
         constraints:
           - node.role==manager
-
-
-
-# node command
-#       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+  
+  node-exporter:
+    image: prom/node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - monitor_network
+    ports:
+      - 9100:9100
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    deploy:
+      # replicas: 1
+      mode: global
+      restart_policy:
+        condition: on-failure
+        
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - monitor_network
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./grafana/config.monitoring
+    deploy:
+      restart_policy:
+        condition: on-failure
