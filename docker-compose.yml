@@ -10,8 +10,8 @@ networks:
 services:
   prometheus:
     image: prom/prometheus
-    # depends_on:
-      # - cadvisor
+    depends_on:
+      - cadvisor
     volumes:
       - prometheus_data:/prometheus
       - ./prometheus/:/etc/prometheus
@@ -25,7 +25,6 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
       - '--web.enable-lifecycle'
-
     deploy:
       replicas: 1
       # resources:
@@ -37,7 +36,41 @@ services:
       placement:
         constraints:
           - node.role==manager
-  
+
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    networks:
+      - monitor_network
+    ports:
+      - 9093:9093
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
+
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - monitor_network
+    ports:
+      - 8181:8080
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+
   node-exporter:
     image: prom/node-exporter
     volumes:
@@ -58,7 +91,7 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
-        
+
   grafana:
     image: grafana/grafana
     depends_on:

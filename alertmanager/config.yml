@@ -1,0 +1,23 @@
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: ''
+  smtp_auth_username: ''
+  smtp_auth_password: ''
+ 
+# templates:
+  # '/etc/alertmanager/template/*.tmpl'
+
+route:
+  group_by: ['alertname','cluster','service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: 'gmail' # Default receiver
+  
+receivers:
+  - name: 'gmail'
+    # send_resolved: true
+    email_configs:
+    - to: ''
+      send_resolved: true
+    # configs
