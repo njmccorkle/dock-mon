@@ -45,3 +45,19 @@ EOF
 17. rm -rf prometheus-2.0.0.linux-amd64.tar.gz prometheus-2.0.0.linux-amd64
 18. create config in /etc/prometheus/prometheus.yml
 sudo chown prometheus:prometheus /etc/prometheus/prometheus.yml
+
+# Prometheus API calls
+Delete specific data
+```
+curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={job="node_exporter"}'
+curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={instance="192.168.0.1:9100"}'
+```
+Delete all data
+```
+curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={__name__=~".+"}'
+```
+Completely remove data after delete_series command
+```
+curl -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/clean_tombstones'
+```
+
