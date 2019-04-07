@@ -54,12 +54,25 @@
       }
     ]
   },
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
   "description": "Docker Monitoring Template",
   "editable": true,
   "gnetId": 179,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1533037835187,
+  "iteration": 1554604592064,
   "links": [],
   "panels": [
     {
@@ -153,7 +166,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -218,6 +231,7 @@
         {
           "expr": "sum(ALERTS)",
           "format": "time_series",
+          "hide": false,
           "intervalFactor": 1,
           "refId": "A"
         }
@@ -233,7 +247,7 @@
           "value": "0"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -313,7 +327,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -393,7 +407,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -712,6 +726,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Node Network Traffic",
       "tooltip": {
@@ -808,6 +823,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Node Mermory",
       "tooltip": {
@@ -899,6 +915,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Filesystem Available",
       "tooltip": {
@@ -1010,6 +1027,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Container CPU usage",
       "tooltip": {
@@ -1107,6 +1125,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Container Memory Usage",
       "tooltip": {
@@ -1256,6 +1275,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Container Network Input",
       "tooltip": {
@@ -1352,6 +1372,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Container Network Output",
       "tooltip": {
@@ -1467,7 +1488,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 16,
+  "schemaVersion": 18,
   "style": "dark",
   "tags": [
     "docker",
@@ -1542,6 +1563,7 @@
         ],
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       }
     ]
@@ -1578,5 +1600,5 @@
   "timezone": "browser",
   "title": "Docker Prometheus Monitoring",
   "uid": "64nrElFmk",
-  "version": 4
+  "version": 1
 }
