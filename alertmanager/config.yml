@@ -1,8 +1,8 @@
 global:
   smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_from: ''
-  smtp_auth_username: ''
-  smtp_auth_password: ''
+  smtp_from: 'njmccorkle@gmail.com'
+  smtp_auth_username: 'njmccorkle@gmail.com'
+  smtp_auth_password: 'gnmxvjdlmsjprkgd'
  
 # templates:
   # '/etc/alertmanager/template/*.tmpl'
@@ -18,6 +18,6 @@ receivers:
   - name: 'gmail'
     # send_resolved: true
     email_configs:
-    - to: ''
+    - to: 'njmccorkle@gmail.com'
       send_resolved: true
     # configs
