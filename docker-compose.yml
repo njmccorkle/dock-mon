@@ -67,6 +67,11 @@ services:
         reservations:
           memory: 128M
 
+  dockerd-exporter:
+    image: stefanprodan/caddy
+    
+
+
   cadvisor:
     image: google/cadvisor
     volumes:

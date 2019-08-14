@@ -1,0 +1,31 @@
+version: '3'
+
+networks:
+  web:
+    #external: true
+
+services:
+  app:
+    image: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+    networks:
+      - web
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role==manager
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
